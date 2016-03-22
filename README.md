@@ -2,7 +2,7 @@
 
 A twitter bot that posts a random adoptable pet from the [SPA](http://www.spa.asso.fr/adopter-animaux).
 
-Heavily inspired from [CutePetsAustin](https://github.com/open-austin/CutePetsAustin).
+Heavily inspired by [CutePetsAustin](https://github.com/open-austin/CutePetsAustin).
 
 Tweeting at [@Adoptez_moi](https://twitter.com/Adoptez_Moi).
 
