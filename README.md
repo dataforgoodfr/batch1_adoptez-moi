@@ -18,7 +18,7 @@ Tweeting at [@Adoptez_moi](https://twitter.com/Adoptez_Moi).
 ### Installation
 
 - Clone the repo `git clone git@github.com:seiteta/CutePetsFrance.git`
-- Configure `credentials.py` with your PetHarbor.com Shelter ID(s), Twitter API Key and Access Token:
+- Configure `credentials.py` with your Twitter API Key and Access Token:
 	
 ```py
 twitter_api_key = 'XXXXX'
