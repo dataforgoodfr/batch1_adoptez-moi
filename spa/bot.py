@@ -136,16 +136,23 @@ def main():
     pet_data = pets_data[pets_data.item_url == pet_url]
     
     # Create the tweet status
-    tweet_format = '[{departement}] {greeting} {name} ! Je suis {species} de type {breed}.\nPlus d\'infos : {url}'    
-    status = tweet_format.format(
+    tweet_format = '[{departement}] {greeting} {name} ! Je suis {species} de type {breed}.'    
+    status_text = tweet_format.format(
         greeting=random.choice(greetings),
         departement=pet_data.departement.tolist()[0],
         name=pet_data.name.tolist()[0],
         species=pet_data.species.tolist()[0],
-        breed=pet_data.breed.tolist()[0],
-        url=pet_data.item_url.tolist()[0]
+        breed=pet_data.breed.tolist()[0]
     )
-    print('Tweet ({} chars): {}'.format(len(status), status))
+    url_length= 23
+    max_text_length = 140 - len("\nPlus d\'infos : ") - url_length
+    status_text = (status_text[:max_text_length] + '…') if len(status_text) > max_text_length else status_text
+    
+    print len(status_text) + len ("\nPlus d\'infos : ") + 23
+
+    status_url=pet_data.item_url.tolist()[0]
+    status = status_text + "\nPlus d\'infos : " +status_url
+    print('Tweet ({} chars): {}'.format(len(status), status))    
 
     # Add an image to the tweet, using the ``image_url`` data
     url = pet_data.image_url.tolist()[0]
