@@ -39,9 +39,9 @@ def tweet(status, media=None):
     Parameters
     ----------
     status : str
-        The status to be posted
+        The status to be posted.
     media : str, default to ``None``
-        If present, add an image to the tweet.
+        The raw binary file content being uploaded.
         
     Returns
     -------
@@ -50,12 +50,22 @@ def tweet(status, media=None):
     """
 
     twitter = OAuth1Session(twitter_api_key, twitter_api_secret, twitter_access_token, twitter_access_token_secret)
-    url = 'https://api.twitter.com/1.1/statuses/update{}.json'.format('_with_media' if media else '')
-    params = {'status': status}
-    files = {'media': media} if media else None
-    print('POST', url, params)
 
-    response = twitter.post(url=url, params=params, files=files)
+    # First, upload the media
+    media_url = 'https://upload.twitter.com/1.1/media/upload.json'
+    media_files = {'media': media}   
+    media_response = twitter.post(url = media_url, files = media_files)
+    
+    print '_' * 50    
+    print(media_response.status_code, media_response.request.url)
+        
+    #Second, post the status
+    media_id = media_response.json()['media_id']
+    status_url = 'https://api.twitter.com/1.1/statuses/update.json'
+    status_params = {'status': status, 'media_ids': media_id}
+    response = twitter.post(url = status_url, params = status_params)
+    
+    print '_' * 50
     print(response.status_code, response.request.url)
 
     response.raise_for_status()
@@ -73,7 +83,7 @@ def has_tweeted_pet_already(pet_url, tweeted_path='.tweeted.json'):
     Parameters
     ----------
     pet_url : str
-        The url of the item that is being checked. It acted like an UUID.
+        The url of the item that is being checked. Acts like a UUID.
     tweeted_path : str, default to ``.tweeted.json``
         The .json file aka the "already tweeted" list.
         
@@ -132,25 +142,27 @@ def main():
 
     print('Chose pet', pet_url)
 
-    # Get the data of the chosen pet
+    # Get data of the chosen pet
     pet_data = pets_data[pets_data.item_url == pet_url]
     
-    # Create the tweet status
+    # Create tweet status
     tweet_format = '[{departement}] {greeting} {name} ! Je suis {species} de type {breed}.'    
     status_text = tweet_format.format(
-        greeting=random.choice(greetings),
-        departement=pet_data.departement.tolist()[0],
-        name=pet_data.name.tolist()[0],
-        species=pet_data.species.tolist()[0],
-        breed=pet_data.breed.tolist()[0]
+        greeting = random.choice(greetings),
+        departement = pet_data.departement.tolist()[0],
+        name = pet_data.name.tolist()[0],
+        species = pet_data.species.tolist()[0],
+        breed = pet_data.breed.tolist()[0]
     )
-    url_length= 23
-    max_text_length = 140 - len("\nPlus d\'infos : ") - url_length
+    
+    # Shorten the status to respect the 140 characters limit    
+    url_length = 23
+    image_lenth = 24
+    max_text_length = 140 - len("\nPlus d\'infos : ") - url_length - image_lenth
     status_text = (status_text[:max_text_length] + '…') if len(status_text) > max_text_length else status_text
     
-    print len(status_text) + len ("\nPlus d\'infos : ") + 23
-
-    status_url=pet_data.item_url.tolist()[0]
+    # Concatenate status and pet url
+    status_url = pet_data.item_url.tolist()[0]
     status = status_text + "\nPlus d\'infos : " +status_url
     print('Tweet ({} chars): {}'.format(len(status), status))    
 
@@ -158,11 +170,10 @@ def main():
     url = pet_data.image_url.tolist()[0]
     response = requests.get(url)
     pet_image = response.content
-
+    
     # Tweet!!!
     tweet(status, media=pet_image)
 
 
 if __name__ == '__main__':
-    main()   
-    
+    main()
