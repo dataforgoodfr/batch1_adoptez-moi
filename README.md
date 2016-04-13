@@ -30,7 +30,7 @@ twitter_access_token_secret = 'XXXXX'
 - Optionally, create and activate a [virtual environment](http://virtualenv.readthedocs.org/en/latest/)
 - Install the python dependencies with `pip install -r requirements.txt`
 - Tweet a random adoptable pet with `python bot.py`
-- Optionally, schedule a cron job to execute ``rm pets_data.csv && scrapy crawl spa-crawler -o pets_data.csv`` every few days
+- Optionally, schedule a cron job to execute `cp pets_data.csv{,.bak} && rm pets_data.csv && scrapy crawl spa-crawler -o pets_data.csv` every few days
 - Optionally, schedule a cron job to execute `bot.py` every few hours
 
 ### Twitter
