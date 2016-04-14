@@ -10,11 +10,11 @@ from scrapy.exceptions import DropItem
 class SpaPipeline(object):
     def process_item(self, item, spider):
         # Only select pets with enough informations
-        if (item['name']) and (item['species']) and (item['image_url']):
+        if (item['name']) and (item['species']) and (item['gender']):
             item['name'][0] = item['name'][0].title().partition(' ')[0].partition(',')[0]
             
             # Lowercase some fields
-            lowercase_fields = ['color', 'breed', 'gender', 'species', 'size']
+            lowercase_fields = ['breed', 'gender', 'species']
             for field in lowercase_fields:
                 if item[field]:
                     item[field][0] = item[field][0].lower()
@@ -38,7 +38,11 @@ class SpaPipeline(object):
             
             # Keep only the number of the departement
             if item['departement']:
-                item['departement'][0]=item['departement'][0].partition(' ')[0]
+                item['departement'][0] = item['departement'][0].partition(' ')[0].partition('-')[0]
+
+            # Keep only the first image
+            if item['image_url']:
+                item['image_url'] = item['image_url'][0]
 
             return item
         else:
