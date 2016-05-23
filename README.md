@@ -1,4 +1,4 @@
-# CutePetsFrance [@Adoptez_moi](https://twitter.com/Adoptez_Moi)
+# [@Adoptez_moi](https://twitter.com/Adoptez_Moi)
 
 A twitter bot that posts a random adoptable pet from the [SPA](http://www.spa.asso.fr/adopter-animaux).
 
