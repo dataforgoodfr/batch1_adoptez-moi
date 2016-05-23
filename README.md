@@ -17,7 +17,7 @@ Tweeting at [@Adoptez_moi](https://twitter.com/Adoptez_Moi).
 
 ### Installation
 
-- Clone the repo `git clone git@github.com:seiteta/CutePetsFrance.git`
+- Clone the repo `git clone git@github.com:dataforgoodfr/adoptez-moi.git`
 - Configure `credentials.py` with your Twitter API Key and Access Token:
 	
 ```py
