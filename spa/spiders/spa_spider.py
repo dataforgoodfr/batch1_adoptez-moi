@@ -5,7 +5,7 @@ from spa.items import SpaItem
 
 class SpaSpider(CrawlSpider):
     name = "spa-crawler"
-    start_urls = ["https://la-spa.fr/adopter-animaux"]
+    start_urls = ["http://la-spa.fr/adopter-animaux"]
     rules = (
             Rule(LinkExtractor(deny = ['/actualites/'], restrict_xpaths = ['//span[@class="animal-name"]','//li[@class="pager-item"]']), callback='parse_animal', follow = True),
     )
